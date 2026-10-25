@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Registration</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div id="demoBanner" class="demo-banner" hidden data-i18n="demoModeBanner"></div>
+
+<div class="page">
+
+  <header class="site-header">
+    <img src="assets/logo.svg" alt="Logo" class="logo">
+    <div class="header-text">
+      <h1 id="orgName">Charity Foundation</h1>
+      <p id="eventName" data-i18n="eventRegistration">Registration Portal</p>
+    </div>
+    <button type="button" id="langToggle" class="lang-toggle">العربية</button>
+  </header>
+
+  <!-- ===================== REGISTRATION VIEW ===================== -->
+  <main id="registerView" class="card">
+    <h2 class="card-title" data-i18n="registerForEvent">Register for the Event</h2>
+    <p class="card-subtitle" data-i18n="registerSubtitle">Fill in your details below to get your unique QR code. Scan it at the kiosk and your wristband prints automatically.</p>
+
+    <form id="regForm" novalidate>
+      <div class="field">
+        <label for="name" data-i18n="fullName">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="e.g. Ahmed Al-Saud" data-i18n-placeholder="fullNamePh" required autocomplete="name">
+        <span class="error" id="err-name"></span>
+      </div>
+
+      <div class="field">
+        <label for="phone" data-i18n="phoneNumber">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="+966 5X XXX XXXX" data-i18n-placeholder="phonePh" required autocomplete="tel">
+        <span class="error" id="err-phone"></span>
+      </div>
+
+      <div class="field">
+        <label for="company" data-i18n="companyOrganization">Company / Organization</label>
+        <input type="text" id="company" name="company" placeholder="e.g. Alpha Holdings" data-i18n-placeholder="companyPh" autocomplete="organization">
+        <span class="error" id="err-company"></span>
+      </div>
+
+      <div class="field">
+        <label for="email" data-i18n="emailAddress">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="name@example.com" data-i18n-placeholder="emailPh" required autocomplete="email">
+        <span class="error" id="err-email"></span>
+      </div>
+
+      <div class="field">
+        <label data-i18n="category">Category</label>
+        <div class="category-grid" id="categoryGrid">
+          <button type="button" class="category-card" data-category="VIP">
+            <span class="cat-icon">★</span>
+            <span class="cat-name" data-i18n="vip">VIP</span>
+          </button>
+          <button type="button" class="category-card" data-category="Visitors">
+            <span class="cat-icon">◆</span>
+            <span class="cat-name" data-i18n="visitors">Visitors</span>
+          </button>
+          <button type="button" class="category-card" data-category="Sponsors">
+            <span class="cat-icon">◈</span>
+            <span class="cat-name" data-i18n="sponsors">Sponsors</span>
+          </button>
+        </div>
+        <span class="error" id="err-category"></span>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="btn-label" data-i18n="completeRegistration">Complete Registration</span>
+        <span class="btn-spinner" hidden></span>
+      </button>
+    </form>
+  </main>
+
+  <!-- ===================== SUCCESS / QR VIEW ===================== -->
+  <main id="successView" class="card" hidden>
+    <div class="success-icon">✓</div>
+    <h2 class="card-title" data-i18n="youreRegistered">You're Registered!</h2>
+    <p class="card-subtitle" id="successSubtitle" data-i18n="successSubtitle">Your QR code is ready. Hold it under the scanner at the kiosk — your wristband prints automatically. Save it or check your email so you have it on hand.</p>
+
+    <div class="qr-wrap">
+      <div id="qrcode"></div>
+      <div class="reg-id" id="regIdLabel"></div>
+    </div>
+
+    <div class="summary-card" id="summaryCard"></div>
+
+    <div class="download-row">
+      <button class="secondary-btn" id="downloadPngBtn" data-i18n="savePng">⬇ Save as PNG</button>
+      <button class="secondary-btn" id="downloadPdfBtn" data-i18n="savePdf">⬇ Save as PDF</button>
+    </div>
+
+    <div class="email-status" id="emailStatus"></div>
+
+    <button class="link-btn" id="registerAnotherBtn" data-i18n="registerAnother">Register another person</button>
+  </main>
+
+  <footer class="site-footer">
+    <span id="footerMode"></span>
+  </footer>
+
+</div>
+
+<!-- QR generation -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<!-- PDF generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Email delivery (client-side, no backend needed) -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Poster</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<!--
+  Printable "scan to register" poster for outside the event entrance.
+  Guests scan it with their phone → registration page (index.html) → fill in
+  their details → get their QR → scan that at the kiosk, which prints their
+  wristband automatically.
+
+  The poster QR points at index.html next to this file by default, so open
+  this page from the deployed site (Firebase Hosting URL) before printing.
+  To point it somewhere else: poster.html?url=https://your-domain/
+-->
+<style>
+  :root {
+    --ink: #0d1220;
+    --dim: #5a6378;
+    --gold: #d4af37;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; color: var(--ink); }
+  body {
+    font-family: "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px;
+    text-align: center;
+  }
+  .poster {
+    width: 100%;
+    max-width: 720px;
+    border: 6px solid var(--gold);
+    border-radius: 28px;
+    padding: 48px 32px;
+  }
+  .logo { width: 110px; margin-bottom: 12px; }
+  .org { font-size: 20px; color: var(--dim); margin: 0 0 28px; }
+  h1 { font-size: 44px; margin: 0; }
+  .ar { font-family: "Tajawal", Tahoma, Arial, sans-serif; direction: rtl; }
+  h1.ar { font-size: 40px; margin-top: 6px; }
+  #qrcode {
+    display: inline-block;
+    padding: 18px;
+    margin: 32px 0 20px;
+    border: 2px solid #e3e6ee;
+    border-radius: 18px;
+  }
+  #qrcode img, #qrcode canvas { display: block; width: 100%; max-width: 420px; height: auto; }
+  .url { font-family: Consolas, monospace; font-size: 14px; color: var(--dim); word-break: break-all; }
+  ol { text-align: start; display: inline-block; margin: 28px 0 0; padding-inline-start: 24px; font-size: 18px; line-height: 1.7; }
+  .steps { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  .print-btn {
+    margin-top: 24px;
+    font-size: 16px;
+    padding: 12px 28px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--ink);
+    color: #fff;
+    cursor: pointer;
+  }
+  @media print {
+    body { padding: 0; }
+    .poster { border-radius: 0; max-width: none; }
+    .print-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="poster">
+  <img src="assets/logo.svg" alt="" class="logo">
+  <p class="org" id="org"></p>
+
+  <h1>Scan to Register</h1>
+  <h1 class="ar">امسح للتسجيل</h1>
+
+  <div id="qrcode"></div>
+  <div class="url" id="url"></div>
+
+  <div class="steps">
+    <ol>
+      <li>Scan this code with your phone</li>
+      <li>Enter your details &amp; tap <b>Complete Registration</b></li>
+      <li>Scan your QR at the kiosk — your wristband prints automatically</li>
+      <li>Scan your wristband at the gate</li>
+    </ol>
+    <ol class="ar">
+      <li>امسح هذا الرمز بهاتفك</li>
+      <li>أدخل بياناتك واضغط <b>إتمام التسجيل</b></li>
+      <li>امسح رمز QR الخاص بك عند الكشك — سيُطبع سوارك تلقائيًا</li>
+      <li>امسح السوار عند البوابة للدخول</li>
+    </ol>
+  </div>
+</div>
+
+<button class="print-btn" onclick="window.print()">Print poster</button>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="config.js"></script>
+<script>
+  const cfg = window.APP_CONFIG;
+  document.getElementById("org").textContent = `${cfg.org.name.en} · ${cfg.org.name.ar}`;
+
+  const target = new URLSearchParams(location.search).get("url")
+    || new URL("index.html", location.href).href;
+  document.getElementById("url").textContent = target;
+
+  // High error correction so a slightly creased or dirty print still scans.
+  new QRCode(document.getElementById("qrcode"), {
+    text: target,
+    width: 420,
+    height: 420,
+    colorDark: "#0d1220",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+</script>
+
+</body>
+</html>

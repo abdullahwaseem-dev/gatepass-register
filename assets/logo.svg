@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="50%" stop-color="#F4E4A6"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="54" fill="none" stroke="url(#ringGrad)" stroke-width="3"/>
+  <circle cx="60" cy="60" r="46" fill="none" stroke="url(#ringGrad)" stroke-width="1" opacity="0.5"/>
+  <text x="60" y="70" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="600" fill="url(#ringGrad)" text-anchor="middle">CF</text>
+  <text x="60" y="106" font-family="Arial, sans-serif" font-size="8" letter-spacing="2" fill="#D4AF37" text-anchor="middle" opacity="0.85">LOGO PLACEHOLDER</text>
+</svg>
