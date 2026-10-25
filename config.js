@@ -11,16 +11,13 @@
 // Then in Firestore Database, click "Create database" and start in test mode
 // (lock it down later with the rules in firestore.rules).
 window.APP_CONFIG = {
-  // Same project as kiosk_app / access_gate. No Web app is registered in the
-  // project yet, so appId is left empty — Firestore only needs apiKey +
-  // projectId. Swap in a real Web app config if you add Analytics etc.
   firebase: {
-    apiKey: "AIzaSyCCFu5PWN8FIUFYn36tHSKa-gLIG8kupzo",
+    apiKey: "AIzaSyCWFgK8qhH9rtkZ5LBzEr4M0qd07poC64E",
     authDomain: "charity-event-reg-2026.firebaseapp.com",
     projectId: "charity-event-reg-2026",
     storageBucket: "charity-event-reg-2026.firebasestorage.app",
     messagingSenderId: "190779733594",
-    appId: "",
+    appId: "1:190779733594:web:d510237f8e9ded7f9c4a63",
   },
 
   // --- 2. EMAILJS -----------------------------------------------------------
@@ -40,8 +37,8 @@ window.APP_CONFIG = {
   // Bilingual: the site auto-picks the string matching the visitor's chosen
   // language (see i18n.js / orgName() / eventNameText() in app.js).
   org: {
-    name: { en: "Charity Foundation", ar: "المؤسسة الخيرية" },
-    eventName: { en: "Registration Portal", ar: "بوابة التسجيل" },
+    name: { en: "ATC Gate Access System", ar: "نظام ATC للتحكم في دخول البوابات" },
+    eventName: { en: "Event Registration", ar: "التسجيل في الفعالية" },
   },
 };
 

@@ -10,7 +10,8 @@ const cfg = window.APP_CONFIG;
 let db = null;
 let fs = null; // firestore module functions, once loaded
 
-const catColors = { VIP: "#d4af37", Visitors: "#33c9dc", Sponsors: "#9b7ef0" };
+// Same category colours as the kiosk (KioskColors) and style.css.
+const catColors = { VIP: "#b7791f", Visitors: "#0e8a9a", Sponsors: "#6d4fc2" };
 
 // Category values stored in Firestore stay canonical English ("VIP" etc.) so
 // they match firestore.rules and the kiosk app regardless of display
@@ -183,7 +184,7 @@ function renderQrCode(regId) {
     text: regId,
     width: 220,
     height: 220,
-    colorDark: "#0d1220",
+    colorDark: "#000000",
     colorLight: "#ffffff",
     correctLevel: QRCode.CorrectLevel.M,
   });
@@ -204,35 +205,37 @@ function buildBadgeCanvas(qrCanvas, data, regId) {
   // Arabic glyphs correctly instead of rendering isolated letterforms.
   ctx.direction = isAr ? "rtl" : "ltr";
 
-  const grad = ctx.createLinearGradient(0, 0, 0, h);
-  grad.addColorStop(0, "#0d1220");
-  grad.addColorStop(1, "#070a12");
-  ctx.fillStyle = grad;
+  // ATC light theme (see style.css): white card, logo blue/charcoal.
+  ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, w, h);
 
-  const catColor = catColors[data.category] || "#d4af37";
+  const catColor = catColors[data.category] || "#0e8a9a";
   ctx.strokeStyle = catColor;
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 4;
   ctx.strokeRect(8, 8, w - 16, h - 16);
+
+  // Logo is preloaded in boot() — skipped if it failed to load.
+  const logoH = 40;
+  if (logoImg && logoImg.complete && logoImg.naturalWidth) {
+    const logoW = (logoImg.naturalWidth / logoImg.naturalHeight) * logoH;
+    ctx.drawImage(logoImg, (w - logoW) / 2, 26, logoW, logoH);
+  }
 
   ctx.textAlign = "center";
   ctx.fillStyle = catColor;
   ctx.font = `bold 18px ${font}`;
-  ctx.fillText(categoryLabel(data.category).toUpperCase(), w / 2, 46);
+  ctx.fillText(categoryLabel(data.category).toUpperCase(), w / 2, 92);
 
-  ctx.fillStyle = "#eef1f8";
-  ctx.font = `bold 24px ${font}`;
-  ctx.fillText(cfg.eventNameText() || "Event Registration", w / 2, 78);
+  ctx.fillStyle = "#353535";
+  ctx.font = `bold 20px ${font}`;
+  ctx.fillText(cfg.eventNameText() || "Event Registration", w / 2, 118);
 
-  ctx.font = `13px ${font}`;
-  ctx.fillStyle = "#8993ab";
-  ctx.fillText(cfg.orgName() || "", w / 2, 100);
-
-  const qrSize = 300;
+  const qrSize = 290;
   const qrX = (w - qrSize) / 2;
-  const qrY = 125;
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(qrX - 12, qrY - 12, qrSize + 24, qrSize + 24);
+  const qrY = 140;
+  ctx.strokeStyle = "#4161ac";
+  ctx.lineWidth = 3;
+  ctx.strokeRect(qrX - 12, qrY - 12, qrSize + 24, qrSize + 24);
   if (qrCanvas) ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
 
   // Detail lines anchor to whichever side reads "first" in the current
@@ -240,12 +243,12 @@ function buildBadgeCanvas(qrCanvas, data, regId) {
   // code and text block keep a natural reading order either way.
   const anchorX = isAr ? w - 40 : 40;
   ctx.textAlign = isAr ? "right" : "left";
-  ctx.fillStyle = "#eef1f8";
+  ctx.fillStyle = "#353535";
   ctx.font = `bold 22px ${font}`;
   ctx.fillText(data.name, anchorX, qrY + qrSize + 55);
 
   ctx.font = `14px ${font}`;
-  ctx.fillStyle = "#8993ab";
+  ctx.fillStyle = "#6b7280";
   let y = qrY + qrSize + 85;
   const lines = [
     data.company ? `${t("company")}: ${data.company}` : null,
@@ -266,6 +269,7 @@ function buildBadgeCanvas(qrCanvas, data, regId) {
 // ---------------------------------------------------------------------------
 
 let selectedCategory = null;
+let logoImg = null;
 let currentBadgeCanvas = null;
 let currentRegId = null;
 
@@ -417,6 +421,8 @@ function registerAnother() {
 // ---------------------------------------------------------------------------
 
 async function boot() {
+  logoImg = new Image();
+  logoImg.src = "assets/app_logo.png";
   applyBranding();
   initCategoryPicker();
   document.getElementById("regForm").addEventListener("submit", handleSubmit);

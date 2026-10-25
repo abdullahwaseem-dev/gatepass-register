@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Registration Poster</title>
-<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="assets/app_logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
@@ -19,10 +19,12 @@
   To point it somewhere else: poster.html?url=https://your-domain/
 -->
 <style>
+  /* ATC palette — same as the kiosk app and style.css */
   :root {
-    --ink: #0d1220;
-    --dim: #5a6378;
-    --gold: #d4af37;
+    --ink: #353535;
+    --dim: #6b7280;
+    --primary: #4161ac;
+    --line: #dde2ea;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: #fff; color: var(--ink); }
@@ -37,33 +39,47 @@
   .poster {
     width: 100%;
     max-width: 720px;
-    border: 6px solid var(--gold);
+    border: 6px solid var(--primary);
     border-radius: 28px;
     padding: 48px 32px;
   }
-  .logo { width: 110px; margin-bottom: 12px; }
-  .org { font-size: 20px; color: var(--dim); margin: 0 0 28px; }
-  h1 { font-size: 44px; margin: 0; }
+  .logo { width: 300px; max-width: 70%; margin-bottom: 16px; }
+  .org { font-size: 20px; font-weight: 600; color: var(--dim); margin: 0 0 28px; }
+  h1 { font-size: 44px; margin: 0; color: var(--ink); }
+  h1 .accent { color: var(--primary); }
   .ar { font-family: "Tajawal", Tahoma, Arial, sans-serif; direction: rtl; }
   h1.ar { font-size: 40px; margin-top: 6px; }
   #qrcode {
     display: inline-block;
     padding: 18px;
     margin: 32px 0 20px;
-    border: 2px solid #e3e6ee;
+    border: 4px solid var(--primary);
     border-radius: 18px;
   }
   #qrcode img, #qrcode canvas { display: block; width: 100%; max-width: 420px; height: auto; }
   .url { font-family: Consolas, monospace; font-size: 14px; color: var(--dim); word-break: break-all; }
-  ol { text-align: start; display: inline-block; margin: 28px 0 0; padding-inline-start: 24px; font-size: 18px; line-height: 1.7; }
+  ol { text-align: start; display: inline-block; margin: 28px 0 0; padding: 0; list-style: none; counter-reset: step; font-size: 17px; }
+  ol li { counter-increment: step; display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; line-height: 1.5; }
+  ol li::before {
+    content: counter(step);
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
   .steps { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
   .print-btn {
     margin-top: 24px;
     font-size: 16px;
     padding: 12px 28px;
     border: 0;
-    border-radius: 10px;
-    background: var(--ink);
+    border-radius: 14px;
+    font-weight: 700;
+    background: var(--primary);
     color: #fff;
     cursor: pointer;
   }
@@ -77,27 +93,27 @@
 <body>
 
 <div class="poster">
-  <img src="assets/logo.svg" alt="" class="logo">
+  <img src="assets/app_logo.png" alt="ATC" class="logo">
   <p class="org" id="org"></p>
 
-  <h1>Scan to Register</h1>
-  <h1 class="ar">امسح للتسجيل</h1>
+  <h1><span class="accent">Scan</span> to Register</h1>
+  <h1 class="ar"><span class="accent">امسح</span> للتسجيل</h1>
 
   <div id="qrcode"></div>
   <div class="url" id="url"></div>
 
   <div class="steps">
     <ol>
-      <li>Scan this code with your phone</li>
-      <li>Enter your details &amp; tap <b>Complete Registration</b></li>
-      <li>Scan your QR at the kiosk — your wristband prints automatically</li>
-      <li>Scan your wristband at the gate</li>
+      <li><span>Scan this code with your phone</span></li>
+      <li><span>Enter your details &amp; tap <b>Complete Registration</b></span></li>
+      <li><span>Scan your QR at the kiosk — your wristband prints automatically</span></li>
+      <li><span>Scan your wristband at the gate</span></li>
     </ol>
     <ol class="ar">
-      <li>امسح هذا الرمز بهاتفك</li>
-      <li>أدخل بياناتك واضغط <b>إتمام التسجيل</b></li>
-      <li>امسح رمز QR الخاص بك عند الكشك — سيُطبع سوارك تلقائيًا</li>
-      <li>امسح السوار عند البوابة للدخول</li>
+      <li><span>امسح هذا الرمز بهاتفك</span></li>
+      <li><span>أدخل بياناتك واضغط <b>إتمام التسجيل</b></span></li>
+      <li><span>امسح رمز QR الخاص بك عند الكشك — سيُطبع سوارك تلقائيًا</span></li>
+      <li><span>امسح السوار عند البوابة للدخول</span></li>
     </ol>
   </div>
 </div>
@@ -108,7 +124,13 @@
 <script src="config.js"></script>
 <script>
   const cfg = window.APP_CONFIG;
-  document.getElementById("org").textContent = `${cfg.org.name.en} · ${cfg.org.name.ar}`;
+  // Separate <bdi>s so the English/Arabic halves don't reorder each other.
+  const org = document.getElementById("org");
+  const en = document.createElement("bdi");
+  en.textContent = cfg.org.eventName.en;
+  const ar = document.createElement("bdi");
+  ar.textContent = cfg.org.eventName.ar;
+  org.append(en, " · ", ar);
 
   const target = new URLSearchParams(location.search).get("url")
     || new URL("index.html", location.href).href;
@@ -119,7 +141,7 @@
     text: target,
     width: 420,
     height: 420,
-    colorDark: "#0d1220",
+    colorDark: "#000000",
     colorLight: "#ffffff",
     correctLevel: QRCode.CorrectLevel.H,
   });

@@ -6,7 +6,7 @@
 
 window.I18N = {
   en: {
-    eventRegistration: "Registration Portal",
+    eventRegistration: "Event Registration",
     registerForEvent: "Register for the Event",
     registerSubtitle: "Fill in your details below to get your unique QR code. Scan it at the kiosk and your wristband prints automatically.",
     fullName: "Full Name",
@@ -52,7 +52,7 @@ window.I18N = {
     registrationFailed: "Something went wrong saving your registration. Please try again.",
   },
   ar: {
-    eventRegistration: "بوابة التسجيل",
+    eventRegistration: "التسجيل في الفعالية",
     registerForEvent: "التسجيل في الفعالية",
     registerSubtitle: "املأ بياناتك أدناه للحصول على رمز QR الخاص بك. امسحه عند الكشك وسيُطبع سوارك تلقائيًا.",
     fullName: "الاسم الكامل",
